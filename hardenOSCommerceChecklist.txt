@@ -1,0 +1,25 @@
+1)  Remove /oscommerce-2.3.4/catalog/install
+2) 	Change admin location
+		1) mv catalog/admin catalog/thisisareallylongstringz
+		2) vi thisisareallylongstringz/includes/configure.php
+				1) change HTTP_COOKIE_PATH, HTTPS_COOKIE_PATH admin->thisisareallylongstringz
+				2) change DIR_WS_ADMIN, DIR_WS_HTTPS_ADMIN, DIR_FS_ADMIN admin/->thisisareallylongstringz/
+4)  Install Secuirty Pro
+		1) cd oscommerce-2.3.4/includes/modules
+		2) wget https://raw.githubusercontent.com/noahddtownsend/hardenoscommerce/master/fwr_media_security_pro.php
+		3) chmod +x fwr_media_security_pro.php
+		4) cd ..
+		5) vi application_top.php
+		6) _above_ if ($request_type == 'NONSSL') {
+			1] include_once DIR_WS_MODULES . 'fwr_media_security_pro.php';
+			2] $security_pro = new Fwr_Media_Security_Pro;
+			3] $security_pro->cleanse( $PHP_SELF );
+		7) service httpd restart
+		
+3)  chmod 444 -R oscommerce-2.3.4
+	find oscommerce-2.3.4/ -type f -iname '*.php' | sed -r 's|/[^/]+$||' |sort |uniq | xargs chmod +x
+	find oscommerce-2.3.4/ -iname '*.php' -exec xhmod +x {} \;
+	
+4)  rm -rf oscommerce-2.3.4/catalog/thisisareallylongstringz/includes/boxes/tools.php
+5)  rm -rf oscommerce-2.3.4/catalog/thisisareallylongstringz/define_language.php
+6)  
