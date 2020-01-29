@@ -1,0 +1,3 @@
+https://www.templatemonster.com/help/secure-your-oscommerce-store.html
+
+make /image/ folder not writable
