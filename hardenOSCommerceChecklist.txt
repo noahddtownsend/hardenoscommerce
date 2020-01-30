@@ -1,4 +1,4 @@
-1)  Remove /oscommerce-2.3.4/catalog/install
+1)  rm -rf oscommerce-2.3.4/catalog/install
 2) 	Change admin location
 		1) mv catalog/admin catalog/thisisareallylongstringz
 		2) vi thisisareallylongstringz/includes/configure.php
@@ -22,4 +22,3 @@
 	
 4)  rm -rf oscommerce-2.3.4/catalog/thisisareallylongstringz/includes/boxes/tools.php
 5)  rm -rf oscommerce-2.3.4/catalog/thisisareallylongstringz/define_language.php
-6)  
