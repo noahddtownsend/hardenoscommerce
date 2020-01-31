@@ -2,8 +2,11 @@
 2) mysql> REVOKE ALL PRIVLEGES ON frog.* FROM 'root'@'%';
 3) mysql> CREATE USER 'oscommercep' IDENTIFIED BY '[new-password]';
 4) mysql> GRANT SELECT, INSERT, UPDATE, DELETE ON frog.* to 'oscommercep'@'[ipaddress/localhost]';
-- do 4 OR 5, not both-
+- do 4 OR 5, preferably 5, but not both-
 5) mysql> SELECT CONCAT("GRANT SELECT, INSERT, UPDATE, DELETE ON frog.", table_name, " TO oscommercep@[ipaddress/localhost];") FROM information_schema.TABLES WHERE table_schema = "frog" AND table_name <> "administrators";
+	1) copy output
+	2) remove |'s
+	3) run queries
 6) vi oscommerce-2.3.4/includes/configure.php
 	1) change `DB_SERVER_USERNAME` to `oscommercep`
 	2) change `DB_SERVER_PASSWORD` to `[password]`
