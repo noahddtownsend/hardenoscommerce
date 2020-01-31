@@ -1,31 +1,40 @@
-1)  rm -rf oscommerce-2.3.4/catalog/install
-2)  Change admin location
+1) mysql> UPDATE mysql.user SET Password=PASSWORD('[new-root-password]') WHERE User='root';
+2) mysql> REVOKE ALL PRIVLEGES ON frog.* FROM 'root'@'%';
+3) mysql> CREATE USER 'oscommercep' IDENTIFIED BY '[new-password]';
+4) mysql> GRANT SELECT, INSERT, UPDATE, DELETE ON frog.* to 'oscommercep'@'[ipaddress/localhost]';
+5) mysql> SELECT CONCAT("GRANT SELECT, INSERT, UPDATE, DELETE ON frog.", table_name, " TO oscommercep@[ipaddress/localhost];") FROM information_schema.TABLES WHERE table_schema = "frog" AND table_name <> "administrators";
+6) vi oscommerce-2.3.4/includes/configure.php
+	1) change `DB_SERVER_USERNAME` to `oscommercep`
+	2) change `DB_SERVER_PASSWORD` to `[password]`
+
+7)  rm -rf oscommerce-2.3.4/catalog/install
+8)  Change admin location
 		1) mv catalog/admin catalog/thisisareallylongstringz
 		2) vi thisisareallylongstringz/includes/configure.php
-				1) change HTTP_COOKIE_PATH, HTTPS_COOKIE_PATH (if present) admin->thisisareallylongstringz
-				2) change DIR_WS_ADMIN, DIR_WS_HTTPS_ADMIN, DIR_FS_ADMIN (if present) admin/->thisisareallylongstringz/
-4)  Install Secuirty Pro
+				1) change `HTTP_COOKIE_PATH`, `HTTPS_COOKIE_PATH` (if present) `admin`->`thisisareallylongstringz`
+				2) change `DIR_WS_ADMIN`, `DIR_WS_HTTPS_ADMIN`, `DIR_FS_ADMIN` (if present) `admin/`->`thisisareallylongstringz/`
+9)  Install Secuirty Pro
 		1) cd oscommerce-2.3.4/includes/modules
 		2) wget https://raw.githubusercontent.com/noahddtownsend/hardenoscommerce/master/fwr_media_security_pro.php
 		3) chmod +x fwr_media_security_pro.php
 		4) cd ..
 		5) vi application_top.php
-		6) _above_ if ($request_type == 'NONSSL') {
-			1] include_once 'includes/modules/fwr_media_security_pro.php';
-			2] $security_pro = new Fwr_Media_Security_Pro;
-			3] $security_pro->cleanse( $PHP_SELF );
+		6) _above_ `if ($request_type == 'NONSSL') {`
+			1] `include_once 'includes/modules/fwr_media_security_pro.php';`
+			2] `$security_pro = new Fwr_Media_Security_Pro;`
+			3] `$security_pro->cleanse( $PHP_SELF );`
 		7) service httpd restart
 		
-3)  chmod 444 -R oscommerce-2.3.4
+10)  chmod 444 -R oscommerce-2.3.4
 	find oscommerce-2.3.4/ -type f -iname '*.php' | sed -r 's|/[^/]+$||' |sort |uniq | xargs chmod +x
 	find oscommerce-2.3.4/ -iname '*.php' -exec chmod +x {} \;
 	
-4)  rm -rf oscommerce-2.3.4/catalog/thisisareallylongstringz/includes/boxes/tools.php
-5)  rm -rf oscommerce-2.3.4/catalog/thisisareallylongstringz/define_language.php
-6)  chmod -R 000 oscommerce-2.3.4/catalog/thisisareallylongstringz
-7)  vi /etc/httpd/conf/httpd.conf
+11)  rm -rf oscommerce-2.3.4/catalog/thisisareallylongstringz/includes/boxes/tools.php
+12)  rm -rf oscommerce-2.3.4/catalog/thisisareallylongstringz/define_language.php
+13)  chmod -R 000 oscommerce-2.3.4/catalog/thisisareallylongstringz
+14)  vi /etc/httpd/conf/httpd.conf
 	1) below '`Options FollowSymLinks` in `<Directory />`
 		`Options -Indexes`
 	2) below `Options Indexes FollowSymLinks` in `<Directory "var/www/html">`
 		'Options -Indexes`
-8)service httpd restart
+15) service httpd restart
